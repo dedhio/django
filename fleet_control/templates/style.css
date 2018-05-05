@@ -1,0 +1,10 @@
+body {
+		color: #000;
+		font: 12px Verdana, sans-serif;
+	}
+
+#sidebar {
+		width: 70%;
+		float: right;
+		text-align: center;
+		}

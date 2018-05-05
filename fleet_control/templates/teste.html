@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load resources_extras %}
+{% block title %} Home {% endblock %}
+
+{% block content %}
+    {%for entry in vehicles %}
+         <h2>{{ entry.name | custom:"Nome " }}</h2>
+         <h2>{{ entry.plate | custom:"Marca " }}</h2>
+    {%endfor %}
+
+{% endblock %}
