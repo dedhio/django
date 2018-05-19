@@ -1,0 +1,31 @@
+<h2>Lista de Veículos </h2>
+<table>
+    <thead>
+        <tr><th>Nome</th></tr>
+    </thead>
+    <tbody>
+        {% for vehicle in vehicle_list %}
+        <tr>
+            <td>{{ vehicle.name }}</td>
+            <td>
+                <a href="{% url "vehicle_detail" vehicle.id %}">Detalhes</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% if is_paginated %}
+<div class="paginacao">
+    <span class="paginacao-links">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">anterior</a>
+        {% endif %}
+        <span class="page-current">
+            P&aacute;gina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+        </span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">pr&oacute;xima</a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
