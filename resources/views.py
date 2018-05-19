@@ -1,5 +1,6 @@
 from datetime import date
-from django.views.generic.base import TemplateView
+from django.shortcuts import get_object_or_404
+from django.views.generic.base import TemplateView, RedirectView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView, ListView
 from django.core.urlresolvers import reverse_lazy
@@ -76,21 +77,44 @@ class UseControlList(TemplateView):
         return context
 
     
+class VehicleRedirectView(RedirectView):
+    permanent = False
+    query_string = True
+    pattern_name = 'vehicle_detail'
+
+    def get_redirect_url(self, *args, **kwargs):
+        vehicle = get_object_or_404(Vehicle, pk=kwargs['pk'])
+        return super(VehicleRedirectView, self).get_redirect_url(*args, **kwargs)
+
+
 class VehicleCreate(CreateView):
     model = Vehicle
     template_name = 'vehicle_form.html'
     fields = ['name', 'plate', 'description', 'licence_plate', 'manufacture_year', 'manufacturer']
-    success_url = reverse_lazy('vehicle_add')
+    success_url = reverse_lazy('vehicle_list')
 
 
 class VehicleUpdate(UpdateView):
     model = Vehicle
     template_name = 'vehicle_form.html'
     fields = ['name', 'plate', 'description', 'licence_plate', 'manufacture_year', 'manufacturer']
-    success_url = reverse_lazy('vehicle_add')
+    success_url = reverse_lazy('vehicle_list')
 
 
 class VehicleDelete(DeleteView):
     model = Vehicle
-    success_url = reverse_lazy('vehicle_add')
+    success_url = reverse_lazy('vehicle_list')
     template_name = 'vehicle_confirm_delete.html'
+
+
+class VehicleDetailView(DetailView):
+    model = Vehicle
+    template_name = 'vehicle_detail.html'
+
+
+class VehicleListView(ListView):
+    model = Vehicle
+    template_name = 'list_vehicle.html'
+    queryset = Vehicle.objects.order_by('name')
+    context_object_name = 'vehicle_list'
+    paginate_by = 2

@@ -1,14 +1,24 @@
 <h2>Lista de Veículos </h2>
 <table>
     <thead>
-        <tr><th>Nome</th></tr>
+        <tr><th>Nome</th>
+        <th>
+            <a href="{% url "vehicle_add" %}">Adicionar</a>
+        </th>
+    </tr>
     </thead>
     <tbody>
         {% for vehicle in vehicle_list %}
         <tr>
             <td>{{ vehicle.name }}</td>
             <td>
+                <a href="{% url "vehicle_delete" vehicle.id %}">Excluir</a>
+            </td>
+            <td>
                 <a href="{% url "vehicle_detail" vehicle.id %}">Detalhes</a>
+            </td>
+            <td>
+                <a href="{% url "vehicle_update" vehicle.id %}">Editar</a>
             </td>
         </tr>
         {% endfor %}
