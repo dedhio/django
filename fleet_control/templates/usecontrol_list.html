@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %} Lista de Veiculo {% endblock %}
+<br/>
+{% block content %}
+	<h1> Lista de Uso de Veículos</h1>
+	<p> {{ vehicle | upper }} </p>
+	<p> {{ driver }} </p>
+	<p> {{ date_started }} </p>
+{% endblock %}
