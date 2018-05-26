@@ -11,6 +11,9 @@
         {% for vehicle in vehicle_list %}
         <tr>
             <td>{{ vehicle.name }}</td>
+            <td>{{ vehicle.licence_plate }}</td>
+            <td>{{ vehicle.manufacture_year }}</td>
+            <td>{{ vehicle.is_active }}</td>
             <td>
                 <a href="{% url "vehicle_delete" vehicle.id %}">Excluir</a>
             </td>

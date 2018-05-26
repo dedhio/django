@@ -61,21 +61,6 @@ def use_control_list(request):
     }
     return render(request, 'usecontrol_list.html', data)
 
-
-class UseControlList(TemplateView):
-    template_name = "usecontrol_list.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(UseControlList, self).get_context_data(**kwargs)
-
-        usecontrol = UseControl.objects.all().first()
-
-        context['driver'] = usecontrol.driver.name
-        context['vehicle'] = usecontrol.vehicle.name
-        context['date_started'] = usecontrol.date_started
-
-        return context
-
     
 class VehicleRedirectView(RedirectView):
     permanent = False
@@ -117,4 +102,22 @@ class VehicleListView(ListView):
     template_name = 'list_vehicle.html'
     queryset = Vehicle.objects.order_by('name')
     context_object_name = 'vehicle_list'
-    paginate_by = 2
+    paginate_by = 5
+
+    def get_queryset(self):
+        return Vehicle.objects.filter(is_active=True).filter(manufacture_year__gt=date(2012,1,1)).order_by('licence_plate')
+
+
+class UseControlList(ListView):
+    template_name = "usecontrol_list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(UseControlList, self).get_context_data(**kwargs)
+
+        usecontrol = UseControl.objects.selected_related("vehicle").selected_related("driver").all().first()
+
+        context['driver'] = usecontrol.driver.name
+        context['vehicle'] = usecontrol.vehicle.name
+        context['date_started'] = usecontrol.date_started
+
+        return context
